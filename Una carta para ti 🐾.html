@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Una carta para ti 🐾</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f1ff; --card:#ffffff; --ink:#2b2140; --soft:#5f5278; --line:#e4daf7; --accent:#7a5cf0; --accent-ink:#ffffff; --pink:#ff6fa5; --gold:#ffc94d;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#171128; --card:#241b3d; --ink:#f4edff; --soft:#c1b2de; --line:#3d3160; --accent:#a58bff; --accent-ink:#1a1230; --pink:#ff8fb9; --gold:#ffd470;}
+}
+:root[data-theme="dark"]{--bg:#171128; --card:#241b3d; --ink:#f4edff; --soft:#c1b2de; --line:#3d3160; --accent:#a58bff; --accent-ink:#1a1230; --pink:#ff8fb9; --gold:#ffd470;}
+*,*::before,*::after{box-sizing:border-box}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:"Nunito",system-ui,sans-serif;font-size:1.1rem;line-height:1.7;overflow-x:hidden}
+.hand{font-family:"Caveat","Segoe Script",cursive;font-weight:700}
+.wrap{max-width:620px;margin:0 auto;padding:0 20px}
+h2{font-size:1.7rem;line-height:1.2;margin:0 0 6px;font-weight:800}
+.sub{margin:0 0 20px;color:var(--soft)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.btn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:13px 26px;font:800 1.05rem "Nunito",sans-serif;cursor:pointer}
+.btn:active{transform:scale(.97)}
+.ghost{background:none;color:var(--accent);border:2px solid var(--accent);border-radius:999px;padding:11px 20px;font:800 1rem "Nunito",sans-serif;cursor:pointer}
+
+/* entrada */
+#intro{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;padding:32px 20px}
+#intro h1{font-size:clamp(2.8rem,11vw,4.2rem);line-height:1;margin:6px 0 0}
+#intro p{margin:0;color:var(--soft)}
+#intro.fade{opacity:0;transform:scale(.96);transition:opacity .7s,transform .7s}
+.gone{display:none!important}
+.env{width:230px;height:155px;border:0;background:none;padding:0;cursor:pointer;transition:transform .3s}
+.env:hover{transform:scale(1.04)}
+.env svg{width:100%;height:100%;overflow:visible}
+.flap{transform-origin:115px 6px;transition:transform .6s}
+.env.open .flap{transform:rotateX(180deg)}
+.gate{width:100%;max-width:370px;margin-top:8px;text-align:center}
+.gate[hidden]{display:none}
+.gt{font-size:1.2rem!important;font-weight:800;color:var(--ink)!important;margin-bottom:12px!important}
+.slots{display:flex;gap:6px;justify-content:center;margin-bottom:12px}
+.slots b{width:44px;height:54px;border-radius:12px;border:2px solid var(--line);display:grid;place-items:center;font-size:1.5rem;font-weight:800}
+.slots b.ok{border-color:var(--accent)}
+.slots b.hl{border-color:var(--gold);color:var(--gold)}
+#code{width:100%;font:800 1.2rem "Nunito",sans-serif;text-align:center;letter-spacing:.3em;text-transform:uppercase;padding:12px;border-radius:14px;border:2px solid var(--line);background:transparent;color:var(--ink)}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.hint{margin:14px 0 0!important;font-size:1rem;color:var(--ink)!important;min-height:3em}
+.shake{animation:shk .4s}
+@keyframes shk{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+
+/* contenido */
+#content{display:none;padding-bottom:200px}
+#content.show{display:block;animation:in .8s ease both}
+@keyframes in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+section{margin-top:64px}
+.hero{text-align:center;padding-top:48px;margin-top:0}
+.hero .big{font-size:clamp(3rem,13vw,4.6rem);line-height:1;margin:0;color:var(--pink)}
+.hero p{margin:10px 0 0;color:var(--soft)}
+.cats{font-size:2rem;letter-spacing:.3em;margin-bottom:6px}
+
+.letter p{margin:0 0 16px}
+.letter .to{font-size:2.1rem;line-height:1.1;margin:0 0 14px;color:var(--pink)}
+.letter .sign{font-size:2rem;line-height:1.1;margin:22px 0 0;text-align:right;color:var(--pink)}
+
+.quote{text-align:center;padding:34px 22px;min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.quote .qe{font-size:2.6rem;line-height:1}
+.quote p{margin:0;font-size:1.4rem;font-weight:800;line-height:1.4;max-width:24ch}
+.qrow{display:flex;justify-content:center;margin-top:16px}
+
+.songs{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.song{width:100%;display:flex;align-items:center;gap:14px;padding:16px 18px;text-align:left;color:inherit;font:inherit;cursor:pointer;transition:border-color .2s}
+.song:hover,.songs li.cur .song{border-color:var(--accent)}
+.song .ix{flex:none;width:42px;height:42px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-weight:800}
+.song .tx{flex:1;min-width:0}
+.song b{display:block;font-weight:800;line-height:1.3}
+.song small{display:block;color:var(--soft);font-size:.98rem;line-height:1.45;margin-top:2px}
+.song .go{flex:none;font-weight:800;color:var(--accent);font-size:.98rem}
+/* reproductor */
+.mini{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--card);border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));transform:translateY(115%);transition:transform .5s;box-shadow:0 -8px 24px #2b214033}
+.mini.show{transform:none}
+.mi{max-width:620px;margin:0 auto}
+.mrow{display:flex;align-items:center;gap:12px}
+.mt{flex:1;min-width:0}
+.mt b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:800;line-height:1.3}
+.mt small{display:block;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.95rem}
+.mc{display:flex;gap:8px;align-items:center}
+.mc button{width:44px;height:44px;border-radius:50%;border:0;background:var(--line);color:var(--ink);font-size:1.05rem;cursor:pointer}
+.mc .pp{width:54px;height:54px;background:var(--accent);color:var(--accent-ink);font-size:1.25rem}
+.mbar{height:8px;border-radius:8px;background:var(--line);margin:12px 0 6px;cursor:pointer;overflow:hidden}
+.mbar i{display:block;height:100%;width:0;background:var(--accent)}
+.mx{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:.92rem;color:var(--soft)}
+.mx button,.mx a{background:none;border:0;color:var(--accent);font:800 .92rem "Nunito",sans-serif;cursor:pointer;padding:4px 0;text-decoration:underline}
+.vid{position:fixed;left:-9999px;bottom:150px;width:320px;aspect-ratio:16/9;z-index:39;border-radius:14px;overflow:hidden;box-shadow:0 10px 30px #0006;background:#000}
+.vid.open{left:auto;right:12px;width:min(320px,calc(100vw - 24px))}
+.vid iframe{width:100%;height:100%;border:0}
+.final{text-align:center}
+.final .big{font-size:clamp(2.4rem,10vw,3.4rem);line-height:1.1;margin:0 0 10px;color:var(--pink)}
+.final p{margin:0 0 20px}
+.floaty{position:fixed;bottom:-40px;pointer-events:none;z-index:50;animation:up 3.4s ease-in forwards}
+@keyframes up{to{transform:translateY(-115vh) rotate(25deg);opacity:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<section id="intro">
+  <button class="env" id="env" aria-label="Abrir el sobre">
+    <svg viewBox="0 0 230 155" aria-hidden="true">
+      <rect x="4" y="28" width="222" height="122" rx="12" fill="#ffd9e6" stroke="#ff6fa5" stroke-width="3"/>
+      <path d="M4 40 L115 106 L226 40" fill="none" stroke="#ff6fa5" stroke-width="3"/>
+      <g class="flap"><path d="M4 28 L115 100 L226 28 Z" fill="#ffb3cd" stroke="#ff6fa5" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M22 30 L32 2 L56 24 Z M208 30 L198 2 L174 24 Z" fill="#ffb3cd" stroke="#ff6fa5" stroke-width="3" stroke-linejoin="round"/></g>
+      <path d="M115 124c-13-8-19-15-19-21a9 9 0 0 1 19-3 9 9 0 0 1 19 3c0 6-6 13-19 21z" fill="#ff4d8a"/>
+    </svg>
+  </button>
+  <h1 class="hand" id="title">Para ti</h1>
+  <p id="tap">Sube el volumen 🔊 y toca el sobre, tengo algo para ti 🐾</p>
+  <div class="gate" id="gate" hidden>
+    <p class="gt">Ingresa el código para abrir</p>
+    <div class="slots" id="slots" aria-hidden="true"></div>
+    <input id="code" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Código de 6 letras en mayúscula" placeholder="EN MAYÚSCULAS">
+    <div class="row"><button class="btn" id="go">Abrir</button><button class="ghost" id="hint">Dame una pista 💡</button></div>
+    <p class="hint" id="hintTxt" aria-live="polite">Pista: son 6 letras, todas en MAYÚSCULA.</p>
+  </div>
+</section>
+
+<main id="content" class="wrap">
+
+  <section class="hero">
+    <div class="cats" aria-hidden="true">🐱🐾🐱</div>
+    <p class="big hand">Feliz cumpleaños 19</p>
+    <p>Esta carta es solo para ti.</p>
+  </section>
+
+  <section>
+    <div class="card letter">
+      <p class="to hand" id="hello">Hola, feliz cumpleaños</p>
+      <p>Hoy cumples 19 y quise regalarte algo que no se pudiera envolver en papel. Por eso armé esta carta con tus canciones y con gatos, porque sé que los amas.</p>
+      <p>Los 19 son un año de transición: ya no eres la de antes, pero todavía estás descubriendo quién vas a ser. Y eso está bien. No tienes que tenerlo todo resuelto, nadie lo tiene.</p>
+      <p>Te deseo que seas valiente aunque te tiemble la voz, que te rodees de gente que te haga sentir en casa, que te perdones rápido y que nunca dejes de ser tú. Los gatos no piden permiso para ser quienes son. Tú tampoco deberías.</p>
+      <p>Lo que venga, puedes con ello. Y cuando dudes, vuelve a esta carta.</p>
+      <p class="sign hand" id="sign">Con cariño 💛</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Frases para ti</h2>
+    <p class="sub">Toca el botón para leer otra.</p>
+    <div class="card quote" aria-live="polite">
+      <span class="qe" id="qe">🐱</span>
+      <p id="qt"></p>
+    </div>
+    <div class="qrow"><button class="btn" id="qn">Otra frase 🐾</button></div>
+  </section>
+
+  <section>
+    <h2>Tu banda sonora</h2>
+    <p class="sub">Toca una para reproducirla, o usa el reproductor de abajo para cambiar de canción.</p>
+    <ul class="songs" id="songs"></ul>
+  </section>
+
+  <section class="final">
+    <p class="big hand">Feliz cumpleaños 🎂</p>
+    <p>Que este año te llene de música, risas y gatos que se suben a tu regazo justo cuando más los necesitas.</p>
+    <button class="btn" id="party">¡Lluvia de felicidad!</button>
+  </section>
+
+</main>
+
+<div class="vid" id="vid"></div>
+<div class="mini" id="mini" role="region" aria-label="Reproductor de música"><div class="mi">
+  <div class="mrow">
+    <div class="mt"><b id="mT">Tu música</b><small id="mA">Lista para sonar</small></div>
+    <div class="mc"><button id="mPrev" aria-label="Canción anterior">⏮</button><button class="pp" id="mPlay" aria-label="Reproducir o pausar">▶</button><button id="mNext" aria-label="Canción siguiente">⏭</button></div>
+  </div>
+  <div class="mbar" id="mbar" aria-hidden="true"><i id="mFill"></i></div>
+  <div class="mx"><span id="mTime">0:00</span><button id="vtog">Ver video</button><a id="yt" href="https://youtu.be/ghJURdZKq3I" target="_blank" rel="noopener">Abrir en YouTube</a></div>
+</div></div>
+<script>
+/* ====== EDITA AQUÍ ====== */
+const NOMBRE = "Yaraza";   // nombre de tu amiga
+const DE = "Tu nombre";    // tu nombre
+const CANCIONES = [        // los títulos se completan solos al sonar; si quieres, escríbelos aquí
+  {id:"ghJURdZKq3I", t:"Canción 1", a:""},
+  {id:"BjqrsnBEvfY", t:"Canción 2", a:""},
+  {id:"3XqqkrJENB4", t:"Canción 3", a:""},
+  {id:"67ygQqMI0k8", t:"Canción 4", a:""},
+  {id:"l08Zw-RY__Q", t:"Canción 5", a:""}
+];
+/* ========================= */
+
+const $=s=>document.querySelector(s);
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+$("#title").textContent="Para "+NOMBRE;
+$("#hello").textContent="Hola, "+NOMBRE+". ¡Feliz cumpleaños!";
+$("#sign").textContent="Con cariño, "+DE+" 💛";
+
+/* ---- código ---- */
+const CODIGO="YARAZA";
+const gate=$("#gate"),code=$("#code"),slots=$("#slots");
+const HINTS=[
+ {t:"Pista: empieza con la letra Y.",r:[0]},
+ {t:"Pista: termina con la letra A.",r:[5]},
+ {t:"Es algo muy tuyo y muy especial 💛 (la 2.ª letra es A).",r:[1]},
+ {t:"Casi lo tienes: la 4.ª letra es A también. Escríbelo en MAYÚSCULAS.",r:[3]},
+ {t:"Ya casi no quedan pistas… ¡tú puedes! 🐾",r:[]}
+];
+let hi=0; const shown=new Set();
+for(let i=0;i<6;i++) slots.appendChild(document.createElement("b"));
+function drawSlots(){
+  const v=code.value;
+  [...slots.children].forEach((b,i)=>{
+    if(v[i]){b.textContent=v[i];b.className="ok";}
+    else if(shown.has(i)){b.textContent=CODIGO[i];b.className="hl";}
+    else{b.textContent="_";b.className="";}
+  });
+}
+drawSlots();
+code.addEventListener("input",()=>{code.value=code.value.toUpperCase().replace(/[^A-ZÑ]/g,"");drawSlots();});
+code.addEventListener("keydown",e=>{if(e.key==="Enter")tryOpen();});
+$("#go").addEventListener("click",tryOpen);
+$("#hint").addEventListener("click",()=>{
+  const h=HINTS[Math.min(hi,HINTS.length-1)]; hi++;
+  $("#hintTxt").textContent=h.t; h.r.forEach(i=>shown.add(i)); drawSlots();
+});
+$("#env").addEventListener("click",()=>{
+  if(!gate.hidden) return;
+  gate.hidden=false; $("#tap").textContent="Está cerrado con candado 🔒"; startMusic(); code.focus();
+});
+function tryOpen(){
+  if(code.value===CODIGO){
+    $("#env").classList.add("open"); $("#hintTxt").textContent="¡Código correcto! 🎉"; startMusic(); $("#mini").classList.add("show");
+    const intro=$("#intro");
+    setTimeout(()=>{
+      intro.classList.add("fade");
+      setTimeout(()=>{
+        intro.classList.add("gone");
+        $("#content").classList.add("show"); window.scrollTo(0,0); rain(18);
+      },reduce?0:700);
+    },reduce?0:800);
+  }else{
+    gate.classList.remove("shake"); void gate.offsetWidth; gate.classList.add("shake");
+    $("#hintTxt").textContent=code.value?"Ese no es. Escribe las 6 letras en MAYÚSCULAS o pide una pista 💡":"Escribe el código primero 🐾";
+  }
+}
+
+/* ---- frases ---- */
+const Q=["No tienes que tener todo resuelto hoy. Solo da el siguiente paso.","Eres capaz de cosas que todavía ni imaginas.","Tu forma de ser no necesita permiso de nadie.","Equivocarte no es fracasar: es aprender con más estilo.","Los sueños grandes empiezan con decisiones pequeñas y diarias.","Sé curiosa como un gato: explora, huele, descubre.","Descansar también es avanzar.","Rodéate de quienes te hacen sentir en casa.","Tu voz importa, aunque te tiemble al usarla.","Hoy no termina nada: hoy empieza todo.","Cae siete veces, levántate ocho y sigue siendo tú.","Quiérete como te quiere la gente que te quiere."];
+const E=["🐱","😺","😻","🐾","😸"];
+let qi=-1;
+function nextQ(){
+  let n; do{n=Math.floor(Math.random()*Q.length);}while(n===qi);
+  qi=n; $("#qt").textContent=Q[n]; $("#qe").textContent=E[Math.floor(Math.random()*E.length)];
+}
+nextQ();
+$("#qn").addEventListener("click",()=>{nextQ(); rain(4,["🐾","💛"]);});
+
+/* ---- reproductor ---- */
+const N=CANCIONES.length, IDS=CANCIONES.map(c=>c.id);
+const names=CANCIONES.map(c=>({t:c.t,a:c.a||""}));
+let cur=0, state=-1, started=false, got=false, dur=0, tcur=0;
+const org=/^https?:/.test(location.origin)?"&origin="+encodeURIComponent(location.origin):"";
+const fr=document.createElement("iframe");
+fr.title="Reproductor de YouTube"; fr.allow="autoplay; encrypted-media; picture-in-picture";
+fr.src="https://www.youtube-nocookie.com/embed/"+IDS[0]+"?enablejsapi=1&playsinline=1&rel=0"+org;
+$("#vid").appendChild(fr);
+function post(func,args){ try{ fr.contentWindow.postMessage(JSON.stringify({event:"command",func:func,args:args||[]}),"*"); }catch(_){} }
+fr.addEventListener("load",()=>{
+  let n=0; const h=setInterval(()=>{
+    try{ fr.contentWindow.postMessage(JSON.stringify({event:"listening",id:1,channel:"widget"}),"*"); }catch(_){}
+    if(got||++n>25) clearInterval(h);
+  },400);
+});
+addEventListener("message",e=>{
+  if(e.source!==fr.contentWindow) return;
+  let d; try{ d=typeof e.data==="string"?JSON.parse(e.data):e.data; }catch(_){ return; }
+  if(!d) return; got=true;
+  if(d.event==="onStateChange") setState(d.info);
+  if(d.event==="infoDelivery"&&d.info){
+    const i=d.info;
+    if(typeof i.playerState==="number") setState(i.playerState);
+    const v=i.videoData;
+    if(v&&v.title&&(!v.video_id||v.video_id===IDS[cur])) setName(cur,v.title,v.author);
+    if(typeof i.duration==="number") dur=i.duration;
+    if(typeof i.currentTime==="number") tcur=i.currentTime;
+    drawProg();
+  }
+});
+function setState(s){
+  if(s===state) return; state=s;
+  $("#mPlay").textContent=(s===1||s===3)?"⏸":"▶";
+  if(s===0) go(cur+1);
+  paint();
+}
+function setName(i,t,a){
+  if(!/^Canción \d+$/.test(CANCIONES[i].t)) return;
+  names[i].t=t; if(!CANCIONES[i].a&&a) names[i].a=a; paint();
+}
+const fmt=x=>{x=Math.max(0,Math.floor(x||0));return Math.floor(x/60)+":"+String(x%60).padStart(2,"0");};
+function drawProg(){
+  $("#mFill").style.width=(dur>0?Math.min(100,tcur/dur*100):0)+"%";
+  $("#mTime").textContent=fmt(tcur)+" / "+fmt(dur);
+}
+function ensurePlay(){
+  let n=0; const t=setInterval(()=>{
+    if(state===1||state===3||++n>16){ clearInterval(t); return; }
+    post("playVideo");
+  },500);
+  setTimeout(()=>{ if(!got) $("#mA").textContent="Si no suena, toca “Abrir en YouTube”"; },6000);
+}
+function startMusic(){ if(started) return; started=true; ensurePlay(); }
+function go(i){
+  cur=(i+N)%N; started=true; dur=0; tcur=0; drawProg();
+  post("loadVideoById",[IDS[cur]]); paint();
+  $("#yt").href="https://youtu.be/"+IDS[cur];
+}
+function toggle(){
+  if(!started){ startMusic(); return; }
+  post((state===1||state===3)?"pauseVideo":"playVideo");
+}
+$("#mPlay").addEventListener("click",toggle);
+$("#mNext").addEventListener("click",()=>go(cur+1));
+$("#mPrev").addEventListener("click",()=>go(tcur>4?cur:cur-1));
+$("#mbar").addEventListener("click",e=>{
+  if(dur<=0) return; const r=e.currentTarget.getBoundingClientRect();
+  post("seekTo",[(e.clientX-r.left)/r.width*dur,true]);
+});
+$("#vtog").addEventListener("click",()=>{
+  const o=$("#vid").classList.toggle("open"); $("#vtog").textContent=o?"Ocultar video":"Ver video";
+});
+
+const ul=$("#songs");
+CANCIONES.forEach((c,i)=>{
+  const li=document.createElement("li");
+  li.innerHTML='<button class="card song"><span class="ix"></span><span class="tx"><b></b><small></small></span><span class="go"></span></button>';
+  li.querySelector(".ix").textContent=i+1;
+  li.querySelector("button").addEventListener("click",()=>{ if(i===cur&&started) toggle(); else go(i); });
+  ul.appendChild(li);
+});
+function paint(){
+  [...ul.children].forEach((li,i)=>{
+    li.classList.toggle("cur",i===cur);
+    li.querySelector("b").textContent=names[i].t;
+    li.querySelector("small").textContent=names[i].a||"Toca para reproducir";
+    li.querySelector(".go").textContent=(i===cur&&(state===1||state===3))?"♪ Sonando":"";
+  });
+  $("#mT").textContent=names[cur].t;
+  if(got||!started) $("#mA").textContent=names[cur].a||"Canción "+(cur+1)+" de "+N;
+}
+paint();
+
+/* ---- lluvia ---- */
+function rain(n,set=["🐾","💛","✨","🐱","🎂","🎶","🌸"]){
+  if(reduce) return;
+  for(let i=0;i<n;i++){
+    const s=document.createElement("span"); s.className="floaty"; s.textContent=set[Math.floor(Math.random()*set.length)];
+    s.style.left=Math.random()*95+"vw"; s.style.animationDelay=Math.random()*1.2+"s"; s.style.fontSize=(1.2+Math.random()*1.4)+"rem";
+    document.body.appendChild(s); setTimeout(()=>s.remove(),5000);
+  }
+}
+$("#party").addEventListener("click",()=>rain(40));
+</script>
+</body>
+</html>
